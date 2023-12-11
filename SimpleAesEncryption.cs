@@ -12,7 +12,9 @@ public class SimpleAesEncryption
         _aesManaged = new AesManaged
         {
             Key = key,
-            IV = iv
+            IV = iv,
+            Mode = CipherMode.CBC,
+            Padding = PaddingMode.PKCS7
         };
     }
 
