@@ -63,7 +63,7 @@ I honestly don't give a fuck what you do with this shit, just don't fucking @ me
         URL: https://codeandkeep.com/PowerShell-Aes-Encryption
 
     Secure String Handling and DPAPI from fausto.io:
-        URL: https://fausto.io/encrypting-and-decrypting-passwords-in-files-with-powershell-7-1/
+        URL: https://fausto.io/encrypting-and-decrypting-passwords-in-files-with-powershell-7-1/](https://web.archive.org/web/20220103225111/https://fausto.io/powershell/2021/06/28/encrypting-and-decrypting-passwords-in-files-with-powershell-7-1/
 
     AES Encryption and Decryption Functions from Michls Tech Blog:
         URL: https://michlstechblog.info/blog/powershell-en-and-decrypt-string-with-aes256/
