@@ -44,7 +44,7 @@ public class SimpleAesEncryption
 
         using (MemoryStream msDecrypt = new MemoryStream(cipherBytes))
         {
-            using (CryptoStream csDecrypt = a new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+            using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
             {
                 using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                 {
@@ -56,4 +56,3 @@ public class SimpleAesEncryption
         return plaintext;
     }
 }
-
