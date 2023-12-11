@@ -1,4 +1,7 @@
-# Functions to save and load secure data
+# Load the custom encryption assembly
+Add-Type -Path "Path\To\SimpleAesEncryption.dll"
+
+# Functions to save and load secure data using DPAPI
 function Save-SecureData($Data, $FilePath) {
     $secureData = [System.Security.Cryptography.ProtectedData]::Protect($Data, $null, [System.Security.Cryptography.DataProtectionScope]::CurrentUser)
     [System.IO.File]::WriteAllBytes($FilePath, $secureData)
@@ -9,12 +12,9 @@ function Load-SecureData($FilePath) {
     return [System.Security.Cryptography.ProtectedData]::Unprotect($secureData, $null, [System.Security.Cryptography.DataProtectionScope]::CurrentUser)
 }
 
-# Load the custom encryption assembly
-Add-Type -Path "C:\Users\Public\SimpleAesEncryption.dll"
-
 # Generate or load key and IV
-$keyPath = "C:\Users\Public\key.dat"
-$ivPath = "C:\Users\Public\iv.dat"
+$keyPath = "path\to\key.dat"
+$ivPath = "path\to\iv.dat"
 
 if (-not (Test-Path $keyPath) -or -not (Test-Path $ivPath)) {
     $key = New-Object Byte[] 32
@@ -33,16 +33,25 @@ if (-not (Test-Path $keyPath) -or -not (Test-Path $ivPath)) {
 $encryptor = New-Object SimpleAesEncryption -ArgumentList ($key, $iv)
 
 # Encrypt a command
-# Make sure to add the commands you wish to run here:
-
 $commandToEncrypt = "Write-Host 'Hello, World!'"
-$encryptedCommand = $encryptor.EncryptString($commandToEncrypt)
-Write-Host "Encrypted Command: $encryptedCommand"
+try {
+    $encryptedCommand = $encryptor.EncryptString($commandToEncrypt)
+    Write-Host "Encrypted Command: $encryptedCommand"
+} catch {
+    Write-Error "Error encrypting command: $_"
+}
 
 # Decrypt the command
-$decryptedCommand = $encryptor.DecryptString($encryptedCommand)
-Write-Host "Decrypted Command: $decryptedCommand"
+try {
+    $decryptedCommand = $encryptor.DecryptString($encryptedCommand)
+    Write-Host "Decrypted Command: $decryptedCommand"
+} catch {
+    Write-Error "Error decrypting command: $_"
+}
 
 # Execute the decrypted command
-Invoke-Expression $decryptedCommand
-
+try {
+    Invoke-Expression $decryptedCommand
+} catch {
+    Write-Error "Error executing command: $_"
+}
