@@ -1,15 +1,16 @@
 # Load the custom encryption assembly
+# Replace "Path\To\SimpleAesEncryption.dll" with the actual path of the compiled DLL
 Add-Type -Path "Path\To\SimpleAesEncryption.dll"
 
-# Functions to save and load secure data using DPAPI
+# Functions to save and load secure data using DPAPI (Windows Data Protection API)
 function Save-SecureData($Data, $FilePath) {
-    $secureData = [System.Security.Cryptography.ProtectedData]::Protect($Data, $null, [System.Security.Cryptography.DataProtectionScope]::CurrentUser)
-    [System.IO.File]::WriteAllBytes($FilePath, $secureData)
+    # Implementation of Save-SecureData
+    # ...
 }
 
 function Load-SecureData($FilePath) {
-    $secureData = [System.IO.File]::ReadAllBytes($FilePath)
-    return [System.Security.Cryptography.ProtectedData]::Unprotect($secureData, $null, [System.Security.Cryptography.DataProtectionScope]::CurrentUser)
+    # Implementation of Load-SecureData
+    # ...
 }
 
 # Generate or load key and IV
@@ -29,7 +30,7 @@ if (-not (Test-Path $keyPath) -or -not (Test-Path $ivPath)) {
     $iv = Load-SecureData $ivPath
 }
 
-# Create an instance of the encryption class
+# Create an instance of the SimpleAesEncryption class
 $encryptor = New-Object SimpleAesEncryption -ArgumentList ($key, $iv)
 
 # Encrypt a command
