@@ -1,21 +1,21 @@
-# Load the custom encryption assembly
-# Replace "Path\To\SimpleAesEncryption.dll" with the actual path of the compiled DLL
-Add-Type -Path "Path\To\SimpleAesEncryption.dll"
+# Load necessary assemblies
+Add-Type -AssemblyName System.Security
+Add-Type -Path "C:\Users\stc\Desktop\test\SimpleAesEncryption.dll"
 
 # Functions to save and load secure data using DPAPI (Windows Data Protection API)
 function Save-SecureData($Data, $FilePath) {
-    # Implementation of Save-SecureData
-    # ...
+    $secureData = [System.Security.Cryptography.ProtectedData]::Protect($Data, $null, [System.Security.Cryptography.DataProtectionScope]::CurrentUser)
+    [System.IO.File]::WriteAllBytes($FilePath, $secureData)
 }
 
 function Load-SecureData($FilePath) {
-    # Implementation of Load-SecureData
-    # ...
+    $secureData = [System.IO.File]::ReadAllBytes($FilePath)
+    return [System.Security.Cryptography.ProtectedData]::Unprotect($secureData, $null, [System.Security.Cryptography.DataProtectionScope]::CurrentUser)
 }
 
 # Generate or load key and IV
-$keyPath = "path\to\key.dat"
-$ivPath = "path\to\iv.dat"
+$keyPath = "C:\Users\stc\Desktop\test\key.dat"
+$ivPath = "C:\Users\stc\Desktop\test\iv.dat"
 
 if (-not (Test-Path $keyPath) -or -not (Test-Path $ivPath)) {
     $key = New-Object Byte[] 32
